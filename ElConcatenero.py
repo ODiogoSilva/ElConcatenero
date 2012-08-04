@@ -3,9 +3,27 @@
 # ElConcatenero v2.0.3
 # Author: Diogo N Silva
 # Last update: 11/04/2012
-# ElConcatenero is tool to convert and concatenate several commonly used data format types. Currently, supported input formats include Nexus, FastA and Phylip. Output may be in Nexus, Phylip (wiht part file for RaXML), FastA or IMa2 format. Please type "ElConcatenero -h" for information on usage.
+# ElConcatenero is tool to convert and concatenate several commonly used data format types. Currently, supported input formats include Nexus, FastA and Phylip. Output may be in Nexus, Phylip (wiht part file for RaXML), FastA or IMa2 format. Please type "ElConcatenero -h" or read the README.md file for information on usage.
 
-import argparse, ElParsito
+#  Copyright 2012 Diogo N Silva <diogo@arch>
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+
+import argparse
+import ElParsito
 
 
 ##### ARGUMENT LIST ######
@@ -95,4 +113,3 @@ else:
 		raise SystemExit
 	storage,part_list,sizes,taxa_order = dataset_creator(arg.infile)
 	output_creator(arg.OutputFormat,storage,part_list,sizes,taxa_order,arg.outfile)
-		
