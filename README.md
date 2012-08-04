@@ -76,9 +76,13 @@ These tips only apply to UNIX OS, as they resort to bash.
 - Assuming you are in a directory with N FASTA files, which you would like to convert to Nexus, you could do something like:
 
 [starting pseudo-code]
+
 for file in `ls | grep .fas*`;
+
  do path/to/ElConcatenero.py -c -if fasta -of nexus -in $file;
+ 
 done;
+
 [ending pseudo-code]
 
 And you'll have a potentially huge ammount of files converted in no time.
@@ -87,8 +91,13 @@ And you'll have a potentially huge ammount of files converted in no time.
 
 [starting pseudo-code]
 for directory in `ls -d */`;
+
  do cd $directory
+ 
  /path/to/ElConcatenero.py -if nexus -of nexus -in *.nex -o concatenated_dataset
+ 
  cd ../
+ 
 done
+
 [ending pseudo-code]
