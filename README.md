@@ -101,3 +101,7 @@ for directory in `ls -d */`;
 done
 
 [ending pseudo-code]
+
+#### ToDo
+
+- Ability to parse concatenated datasets, either to separate them or to further concatenate
