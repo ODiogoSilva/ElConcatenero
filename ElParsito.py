@@ -4,6 +4,21 @@
 # Last update: 30/07/12
 # ElParsito.py is a python module with fuctions that can parse genetic data files in FastA, Phylip and Nexus to another format that can be easily used by other software. It also includes some quality checks such as, checking for duplicated taxon names and unequal sequence lenghts.
 
+#  Copyright 2012 Diogo N Silva <diogo@arch>
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not,  If not, see <http://www.gnu.org/licenses/>.
+
 import re
 import subprocess
 
@@ -68,7 +83,7 @@ def Taxa_gather (Elformat,infile_list):
 						taxa_order.append(line_s[0])
 	return storage,taxa_order
 
-def Elparsito(Elformat, storage, infile_list, outputFormat,tab_delimited_loci):
+def Elparsito(Elformat, storage, infile_list, outputFormat,tab_delimited_loci="no"):
 	""" Function to populate a dictionary with taxa names as keys and their corresponding sequence as values. Returns a complete dictionary, a list of partitions and the total sequence size. """
 	""" The new argument 'tab_delimited_loci' can be set to True when the user wants to separate loci with whitespace (Tab is used here). This is usefull for some programs such as Arlequin """
 	part_list,sizes = [],1
