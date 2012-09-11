@@ -45,7 +45,7 @@ seq_space_ima2 = 10 # Required by IMa2! Changing this value will most likely bre
 
 # Cut the taxa names by the following character:
 cut_space_nex = 8
-cut_space_phy = 8
+cut_space_phy = 20
 cut_space_ima2 = 8
 
 # If you wish to include a whitespace (tab) between loci, set the variable to "yes", ortherwise "no".
@@ -71,17 +71,17 @@ def output_creator(output_format,storage,part_list,sizes,taxa_order,outfile):
 			sample_size,model,rate,ploidy = locus_info.split(";")
 			out_file.write(file_i.split(".")[0]+" "+sample_size+" "+str(sizes-1)+" "+model.strip()+" "+ploidy.strip()+" "+rate.strip()+"\n")
 			for key in taxa_order:
-				out_file.write(key[:cut_space_ima2].ljust(seq_space_ima2)+storage[key]+"\n")
+				out_file.write(key.replace(" ","_")[:cut_space_ima2].ljust(seq_space_ima2)+storage[key]+"\n")
 	elif output_format == "phylip":
 		out_file = open(outfile+".phy","w")
 		out_file.write(str(len(storage))+" "+str(sizes-1)+"\n")
 		for key in taxa_order:
 			if arg.Conversion == None:
-				out_file.write(key[:cut_space_phy].ljust(seq_space_phy)+" "+storage[key]+"\n")
+				out_file.write(key.replace(" ","_")[:cut_space_phy].ljust(seq_space_phy)+" "+storage[key]+"\n")
 				part_file = open(outfile.split(".")[0]+"_part.File","w")
 				part_file.write("".join(part_list))
 			else:
-				out_file.write(key.ljust(seq_space_phy)+" "+storage[key]+"\n")
+				out_file.write(key.replace(" ","_").ljust(seq_space_phy)+" "+storage[key]+"\n")
 	elif output_format == "nexus":
 		out_file = open(outfile+".nex","w")
 		if arg.Conversion:
@@ -90,12 +90,12 @@ def output_creator(output_format,storage,part_list,sizes,taxa_order,outfile):
 			partition_str = "".join(part_list)
 			out_file.write("#NEXUS\n\nBegin data;\n\tdimensions ntax="+str(len(storage))+" nchar="+str(sizes-1)+";\n\tformat datatype=mixed ("+"".join(part_list)[:-1]+") interleave=no gap="+arg.gap+" missing="+arg.missing+";\n\tmatrix\n")
 		for key in taxa_order:
-			out_file.write(key[:cut_space_nex].ljust(seq_space_nex)+" "+storage[key]+"\n")
+			out_file.write(key.replace(" ","_")[:cut_space_nex].ljust(seq_space_nex)+" "+storage[key]+"\n")
 		out_file.write("\t;\nend;")
 	elif output_format == "fasta":
 		out_file = open(outfile+".fas","w")
 		for key in taxa_order:
-			out_file.write(">"+key+"\n"+storage[key]+"\n")
+			out_file.write(">"+key.replace(" ","_")+"\n"+storage[key]+"\n")
 				
 ##### EXECUTION ######
 				
