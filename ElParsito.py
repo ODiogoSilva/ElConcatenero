@@ -21,21 +21,17 @@
 
 import re
 import subprocess
+import sys
 
-encoding_list = ["ascii","utf-8","utf-16"]
-
-def fileEncoding_check (input_file, filetypes):
-	command = subprocess.Popen("file %s" % (input_file),shell=True,stdout=subprocess.PIPE)
-	encoding_line = command.communicate()[0]
-	encoding_line = encoding_line.decode("utf-8")
-	encoding = ""
-	for i in encoding_list:
-		if i in encoding_line.lower():
-			encoding = i
-	if encoding == "":
-		encoding = "ascii"
-		print ("\n\tWarning! File enconding for %s is unknown. This may break the script. If you know the encoding of the file, you can add it to the 'encoding_list' list in line 10 of the ElParsito.py module. Sorry for the inconveniance" % (input_file))
-	return encoding
+def loading (current_state,size,prefix,width,suffix):
+	""" Function that prints the loading progress of the script """
+	percentage = int(((current_state+1)/size)*100)
+	complete = int(width*percentage*0.01)
+	if percentage == 100:
+		sys.stdout.write("\r%s [%s%s] %s%% -- Done!%s\n" % (prefix,"#"*complete,"."*(width-complete),percentage," "*100))
+	else:
+		sys.stdout.write("\r%s [%s%s] %s%% (%s)" % (prefix,"#"*complete,"."*(width-complete),percentage,suffix))
+	sys.stdout.flush()
 
 def size_check(dic,i_file):
 	""" Function to test whether all sequences are of the same size and, if not, which are different """
@@ -52,8 +48,7 @@ def Taxa_gather (Elformat,infile_list):
 	""" Function to gather the taxa names of all input files as keys of a dictionary. Must be performed before the ElParsito function in order to complete the dictionary keys over all input files. Returns a dictionary with the complete set of keys and empty values, and a list of taxa to maintain taxa order in subsequent functions """
 	storage,taxa_order = {},[]
 	for file_i in infile_list:
-		file_encoding = fileEncoding_check(file_i,encoding_list)
-		file_r = open(file_i,"r",encoding=file_encoding)
+		file_r = open(file_i,"r")
 		x = 1
 		if "phylip" in Elformat:
 			next(file_r)
@@ -86,11 +81,11 @@ def Taxa_gather (Elformat,infile_list):
 def Elparsito(Elformat, storage, infile_list, outputFormat,tab_delimited_loci="no"):
 	""" Function to populate a dictionary with taxa names as keys and their corresponding sequence as values. Returns a complete dictionary, a list of partitions and the total sequence size. """
 	""" The new argument 'tab_delimited_loci' can be set to True when the user wants to separate loci with whitespace (Tab is used here). This is usefull for some programs such as Arlequin """
-	part_list,sizes = [],1
+	part_list,sizes,cur_file = [],1,0
 	for file_i in infile_list:
-		file_encoding = fileEncoding_check(file_i,encoding_list)
+		loading (cur_file, len(infile_list), "Processing alignments", 50, "Processing file %s" % (file_i,))
 		temp_storage, x = {}, 1
-		file_r = open(file_i,"r",encoding=file_encoding)
+		file_r = open(file_i,"r")
 		if "phylip" in Elformat:
 			for line in file_r:
 				## Collects information on the number of taxa and locus size that are found on the first line of the file ##
@@ -204,6 +199,7 @@ def Elparsito(Elformat, storage, infile_list, outputFormat,tab_delimited_loci="n
 					storage[key] += "n"*int(seq_size)+"\t"
 				elif storage[key] in temp_storage.keys() and tab_delimited_loci == "yes":
 					storage[key] += "\t"
-					
+		cur_file += 1
+		file_r.close()
 		#size_check(temp_storage,file_i)
 	return storage, part_list, sizes
