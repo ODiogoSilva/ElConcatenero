@@ -105,7 +105,7 @@ def Elparsito(Elformat, storage, infile_list, outputFormat,tab_delimited_loci="n
 			for line in file_r:
 				## Collects information on the number of taxa and locus size that are found on the first line of the file ##
 				if x == 1:
-					seq_size = line.split()[0]
+					seq_size = line.split()[1]
 					x += 1
 					if "phylip" in outputFormat and len(infile_list) > 1:
 						part_list.append("DNA, "+file_i.split(".")[0]+" = "+str(sizes)+"-"+str(sizes+int(seq_size)-1)+"\n")
